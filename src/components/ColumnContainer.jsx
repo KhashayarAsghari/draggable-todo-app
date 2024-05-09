@@ -7,7 +7,9 @@ function ColumnContainer({
   column,
   updateColumn,
   createTask,
-  tasks
+  tasks,
+  updateTask,
+  deleteTask
 }) {
   const [editMode, setEditMode] = useState(false)
 
@@ -95,20 +97,7 @@ function ColumnContainer({
       "
       >
         <div className="flex gap-2">
-          <div
-            className="
-        flex
-        justify-center
-        items-center
-        bg-columnBackgroundColor
-        px-2
-        py-1
-        text-sm
-        rounded-full
-        "
-          >
-            0
-          </div>
+     
           {!editMode && column.title}
           {editMode && (
             <input
@@ -135,6 +124,8 @@ function ColumnContainer({
             <TaskCard
               key={task.id}
               task={task}
+              updateTask={updateTask}
+              deleteTask={deleteTask}
             />
           ))}
         </SortableContext>

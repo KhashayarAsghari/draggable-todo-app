@@ -16,11 +16,11 @@ import {v4 as uuidv4} from "uuid"
 const defaultCols = [
   {
     id: "todo",
-    title: "Todo"
+    title: "To-do"
   },
   {
     id: "doing",
-    title: "Work in progress"
+    title: "in progress"
   },
   {
     id: "done",
@@ -101,7 +101,7 @@ function KanbanBoard() {
   const [columns, setColumns] = useState(defaultCols)
   const columnsId = useMemo(() => columns.map(col => col.id), [columns])
 
-  const [tasks, setTasks] = useState(defaultTasks)
+  const [tasks, setTasks] = useState([])
 
   const [activeColumn, setActiveColumn] = useState(null)
 
@@ -144,6 +144,8 @@ function KanbanBoard() {
                   updateColumn={updateColumn}
                   createTask={createTask}
                   tasks={tasks.filter(task => task.columnId === col.id)}
+                  updateTask={updateTask}
+                  deleteTask={deleteTask}
                 />
               ))}
             </SortableContext>
@@ -193,6 +195,31 @@ function KanbanBoard() {
       </DndContext>
     </div>
   )
+
+  function deleteTask(id) {
+    setTasks(prev => {
+      return prev.filter(task => task.id !== id)
+    }
+    )
+  }
+
+  function updateTask(id, text){
+    
+    const newTasks = tasks.map(taskItem => {
+      if(taskItem.id === id) {
+        return {
+          ...taskItem,
+          content: text,
+        }
+      } else {
+        return {
+          ...taskItem
+        }
+      }
+    })
+
+    setTasks(newTasks)
+  }
 
   function createTask(columnId) {
     const newTask = {
@@ -309,4 +336,6 @@ function generateId() {
   return uuidv4();
 }
 
+
 export default KanbanBoard
+
